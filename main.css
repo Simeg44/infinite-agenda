@@ -40,6 +40,32 @@ hr {
 	text-align: right;
 }
 
+.newApp {
+	font-family: cursive;
+	border: 1px solid black;
+	width: 94%;
+	margin: auto;
+	font-size: 14px;
+	padding: 10px;
+	line-height: 8px;
+}
+
+.app-title {
+	font-size: 25px;
+	margin-top: 10px;
+}
+
+.app-loc {
+	color: #666666;
+	margin-left: 30px;
+}
+
+.app-times {
+	font-size: 20px;
+	float: right;
+	margin-top: -60px;
+}
+
 .addNew {
 	width: 60%;
 	margin: auto;
@@ -48,6 +74,7 @@ hr {
 	margin-bottom: 10%;
 	font-family: cursive;
 	color: #666666;
+	cursor: pointer;
 }
 
 .app-nfo {
@@ -61,12 +88,28 @@ hr {
 	vertical-align: top;
 }
 
-.app-nfo input, textarea {
+.app-nfo input, textarea, button {
 	border-radius: 5px;
 	border: 1px solid salmon;
 	margin: 0px 10px 10px;
 }
 
-button {
+.change-app {
+	float: right;
+	margin-top: -20px;
+}
+
+button, #submit {
 	margin: 10px;
+	background: white;
+}
+
+span {
+	color: salmon;
+}
+
+.notes {
+	border-top: 2px dashed salmon;
+	margin: 40px;
+	padding: 15px;
 }

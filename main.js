@@ -117,6 +117,15 @@ var completeDate = function(i) {
 	return stringDate;
 };
 
+var switchOver = function(place) {
+	$(".newAppointment").slideToggle();
+	place.closest('.day').find('p').slideToggle();
+	formOpen = false;
+	place.closest(".day").find('.apps').fadeToggle();
+};
+
+var formOpen = false;
+
 $(document).on('ready', function() {
 
 	var day = dayOfTheWeek();
@@ -129,39 +138,88 @@ $(document).on('ready', function() {
 		$(".week").append(dayBox);
 		var now = stringDay(day, i);
 		$("div").last().append("<div class='dayOfTheWeek'>" + now + "</div>").append("<div class='date'>" + completeDate(i) + "</div>").append('<hr>')
-						.append("<p class='addNew'>Click To Add New Appointment</p>");
+						.append("<div class='apps'></div>").append("<p class='addNew'>Click To Add New Appointment</p>");
 	}
 
 	$(".addNew").hover(function() {
 			$(this).css("color", "salmon");
 		}, function() {
 			$(this).css("color", "#666666");
-		});
-	
+	});
+
 	$(".day").on('click', function() {
-		$(this).append($(".newAppointment"));
-		$(".newAppointment").slideToggle();
-		$(this).find('p').slideToggle();
+		
+		if (!formOpen) {
+			$(this).append($(".newAppointment"));
+			$(".newAppointment").slideToggle();
+			$(this).find('p').slideToggle();
+			$(this).find('.apps').fadeToggle();
+
+			$(this).find("input[type=text], textarea").val("");
+			$(this).find("#title").focus();
+			formOpen = true;
+		}
+
+		$(".apps").on('click', function(e) {
+			e.stopPropagation();
+		})
 
 		$(".newAppointment").on('click', function(e) {
 			e.stopPropagation();
 		})
+
+	});
+
+	$(".apps").on('click', 'button', function(e) {
+		e.preventDefault();
+		$(this).closest(".newApp").remove();
 	})
 
-	$("button").on('click', function(e) {
+	$("form").on('click', "#cancel", function(e) {
 		e.preventDefault();
-		$(".newAppointment").slideToggle();
-		$(this).closest('.day').find('p').slideToggle();
+		switchOver($(this));
 
-		if($(this).is("#submit")) {
-			var location = $(this).closest(".newAppointment");
-			var title = location.find("#title").val();
-			var location = location.find("#location").val();
-			// var start = location.find("#start").val();
-			console.log(title);
-			console.log(location);
-			// console.log(start)
+	});
+
+	$(".newAppointment").submit(function(e) {
+		e.preventDefault();
+		switchOver($(this));
+
+		var place = $(this).closest(".newAppointment");
+		var appointment = {
+			title: place.find("#title").val(),
+			location: place.find("#location").val(),
+			start: place.find("#start").val(),
+			end: place.find("#end").val(),
+			notes: place.find('#notes').val()
+		};
+		console.log(appointment);
+		localStorage.setItem("appointment", appointment);
+		var time = start;
+
+		var buttons = $("<div class='change-app'><button id='delete'>Delete</button></div>");
+
+		if (appointment.title !== "") {
+			$(this).closest(".day").find(".apps").append("<div class='newApp'><p class='app-title'>" + appointment.title 
+				+ "</p><p class='app-loc'>Location: " + appointment.location + "</p><div class='app-times'><p><span>From: </span>" 
+				+ appointment.start + "<span> To: </span>" + appointment.end + "</p></div></div>");
+			$(this).closest(".day").find(".newApp").last().data("time", time);
+			$(this).closest(".day").find(".newApp").last().append(buttons);
+			if (notes !== "") {
+				$(this).closest(".day").find(".newApp").last().append("<div class='notes'>Notes: " + appointment.notes + "</div>");
+			}
+
 		}
 	});
+
+	$("#delete").hover(function() {
+			console.log("working");
+		}, function() {
+			$(this).css("background-color", white);
+	});
+
+	
+	
+
 
 });
