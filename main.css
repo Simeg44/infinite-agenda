@@ -1,12 +1,12 @@
 
 
 .container {
-	width: 80%;
+	max-width: 80%;
 	margin: auto;
 }
 
 .day {
-	width: 80%;
+	max-width: 80%;
 	margin: auto;
 	border: 2px solid salmon;
 	background: #e2e2e2;
@@ -59,7 +59,7 @@ hr {
 
 
 .addNew {
-	width: 60%;
+	max-width: 60%;
 	margin: auto;
 	text-align: center;
 	margin-top: 10%;
