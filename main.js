@@ -175,6 +175,13 @@ $(document).on('ready', function() {
 		$(this).closest(".newApp").remove();
 	})
 
+	$(".apps").on('mouseenter', 'button', function() {
+		$(this).css("background-color", "#e2e2e2");
+	})
+	$(".apps").on('mouseleave', 'button', function() {
+		$(this).css("background-color", "white");
+	})
+
 	$("form").on('click', "#cancel", function(e) {
 		e.preventDefault();
 		switchOver($(this));
@@ -212,11 +219,9 @@ $(document).on('ready', function() {
 		}
 	});
 
-	$("#delete").hover(function() {
-			console.log("working");
-		}, function() {
-			$(this).css("background-color", white);
-	});
+	$(window).scroll(function () {
+		if()
+	})
 
 	
 	
