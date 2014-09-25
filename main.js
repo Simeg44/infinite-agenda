@@ -94,9 +94,6 @@ var completeDate = function(i) {
 		currentDate = increment(currentDate);
 		i--;
 	}
-	var d = new Date(currentDate[0] + " " + currentDate[1] + " " + currentDate[2]);
-	var i = d.getDay();
-	console.log(i);
 	return currentDate;
 };
 
@@ -211,7 +208,7 @@ $(document).on('ready', function() {
 		};
 		console.log(appointment);
 		localStorage.setItem("appointment", appointment);
-		var time = start;
+		var time = appointment.start;
 
 		var buttons = $("<div class='change-app'><button id='delete'>Delete</button></div>");
 
@@ -219,12 +216,17 @@ $(document).on('ready', function() {
 			$(this).closest(".day").find(".apps").append("<div class='newApp'><p class='app-title'>" + appointment.title 
 				+ "</p><p class='app-loc'>Location: " + appointment.location + "</p><div class='app-times'><p><span>From: </span>" 
 				+ appointment.start + "<span> To: </span>" + appointment.end + "</p></div></div>");
-			$(this).closest(".day").find(".newApp").last().data("time", time);
+			$(this).closest(".day").find(".newApp").last().data("order", time);
 			$(this).closest(".day").find(".newApp").last().append(buttons);
 			if (appointment.notes !== "") {
 				$(this).closest(".day").find(".newApp").last().append("<div class='notes'>Notes: " + appointment.notes + "</div>");
 			}
 
+		}
+
+		var movingApp = $(".newApp").last();
+		while ((movingApp.data("order")) < (movingApp.prev().data("order"))) {
+			movingApp.insertBefore(movingApp.prev());
 		}
 	});
 

@@ -20,15 +20,6 @@
 	font-family: cursive;
 }
 
-.date {
-	padding: 10px 20px;
-	display: inline-block;
-	font-family: cursive;
-	color: salmon;
-	font-size: 60px;
-	margin-left: -48px;
-	opacity: 0.5;
-}
 
 hr {
 	margin-top: -20px;
@@ -63,8 +54,9 @@ hr {
 .app-times {
 	font-size: 20px;
 	float: right;
-	margin-top: -60px;
+	margin-top: -74px;
 }
+
 
 .addNew {
 	width: 60%;
@@ -78,7 +70,6 @@ hr {
 }
 
 .app-nfo {
-	/*padding: 10px;*/
 	margin-right: 30%;
 	font-family: cursive;
 	color: salmon;
@@ -112,4 +103,77 @@ span {
 	border-top: 2px dashed salmon;
 	margin: 40px;
 	padding: 15px;
+	line-height: 17px;
+}
+
+#delete {
+	margin-top: -5px;
+}
+
+@media screen and (min-width: 670px) {
+	.date {
+		padding: 10px 20px;
+		display: inline-block;
+		font-family: cursive;
+		color: salmon;
+		font-size: 60px;
+		margin-left: -48px;
+		opacity: 0.5;
+	}
+}
+
+@media screen and (max-width: 670px) {
+	.date {
+		font-family: cursive;
+		color: salmon;
+		font-size: 41px;
+		opacity: 0.5;
+		margin-top: -38px;
+		margin-bottom: 20px;
+		clear: both;
+	}
+
+	.dayOfTheWeek {
+		padding: 0px 20px;
+	}
+
+	.app-nfo {
+		text-align: center;
+		margin-right: 10%;
+	}
+	.container {
+		width: 100%;
+	}
+	.newApp {
+		padding: 4px;
+	}
+	.app-times {
+		margin-top: -49px;
+	}
+	.app-loc {
+		padding-bottom: 30px;
+	}
+	#delete {
+		margin-top: 10px;
+	}
+}
+
+@media screen and (max-width: 410px) {
+	.app-nfo textarea {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 330px) {
+	.day {
+		width: 100%;
+	}
+
+	.app-nfo input, button {
+		width: 100%;
+	}
+
+	#delete {
+		margin-left: 0px;
+	}
 }
