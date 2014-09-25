@@ -18,31 +18,11 @@ var currentYear = function() {
 	return date.getFullYear ()
 }
 
-var stringDay = function(day, plusDays) {
-	var stringDay;
-	var current = day + plusDays;
-	if (current === 0) {
-		stringDay = "Sunday";
-	}
-	else if (current === 1) {
-		stringDay = "Monday";
-	}
-	else if (current === 2) {
-		stringDay = "Tuesday";
-	}
-	else if (current === 3) {
-		stringDay = "Wednesday";
-	}
-	else if (current === 4) {
-		stringDay = "Thursday";
-	}
-	else if (current === 5) {
-		stringDay = "Friday";
-	}
-	else {
-		stringDay = "Saturday";
-	}
-	return stringDay;
+var weekDay = function(currentDate) {
+	var d = new Date(currentDate[0] + " " + currentDate[1] + " " + currentDate[2]);
+	var now = d.getDay()
+	var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday","Thursday", "Friday", "Saturday"];
+	return weekday[now];
 }
 
 var leapYear = function(year) {
@@ -104,18 +84,25 @@ var increment = function(array) {
 };
 
 var completeDate = function(i) {
-	var month = currentMonth();
+	var month = currentMonth() + 1;
 	var day = currentDay();
 	var year = currentYear();
+	var present = month + " " + day + " " + year;
 	var currentDate = [month,day,year];
 
 	while (i > 0) {
 		currentDate = increment(currentDate);
 		i--;
 	}
-	var stringDate = currentDate[0] + "/" + currentDate[1] + "/" + currentDate[2];
-	return stringDate;
+	var d = new Date(currentDate[0] + " " + currentDate[1] + " " + currentDate[2]);
+	var i = d.getDay();
+	console.log(i);
+	return currentDate;
 };
+
+var stringDate = function(array) {
+	return (array[0] + "/" + array[1] + "/" + array[2]);
+}
 
 var switchOver = function(place) {
 	$(".newAppointment").slideToggle();
@@ -128,26 +115,47 @@ var formOpen = false;
 
 $(document).on('ready', function() {
 
-	var day = dayOfTheWeek();
 	
+	var place = 7;
+
 
 	for (var i = 0; i < 7; i++) {
+		var present = completeDate(i);
 		var dayBox = $("<div class='day'></div>");
-		// var current = "day" + i;
-		// $(".week").append(dayBox.attr("id", current));
 		$(".week").append(dayBox);
-		var now = stringDay(day, i);
-		$("div").last().append("<div class='dayOfTheWeek'>" + now + "</div>").append("<div class='date'>" + completeDate(i) + "</div>").append('<hr>')
+		var now = weekDay(present);
+		$("div").last().append("<div class='dayOfTheWeek'>" + now + "</div>").append("<div class='date'>" + stringDate(present) + "</div>").append('<hr>')
 						.append("<div class='apps'></div>").append("<p class='addNew'>Click To Add New Appointment</p>");
 	}
+	
+	$(window).scroll(function () {
 
-	$(".addNew").hover(function() {
+		if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+			var present = completeDate(place);
+			var dayBox = $("<div class='day'></div>");
+			$(".week").append(dayBox);
+			var now = weekDay(present);
+			$("div").last().append("<div class='dayOfTheWeek'>" + now + "</div>").append("<div class='date'>" + stringDate(present) + "</div>").append('<hr>')
+						.append("<div class='apps'></div>").append("<p class='addNew'>Click To Add New Appointment</p>");
+			place++
+   		}
+	});
+
+	/*$(".addNew").hover(function() {
 			$(this).css("color", "salmon");
 		}, function() {
 			$(this).css("color", "#666666");
+	});*/
+
+	$(document).on('mouseenter', '.addNew', function() {
+		$(this).css("color", "salmon");
+	});
+	$(document).on('mouseleave', '.addNew', function() {
+		$(this).css("color", "#666666");
 	});
 
-	$(".day").on('click', function() {
+
+	$(document).on('click', '.day', function() {
 		
 		if (!formOpen) {
 			$(this).append($(".newAppointment"));
@@ -160,27 +168,28 @@ $(document).on('ready', function() {
 			formOpen = true;
 		}
 
-		$(".apps").on('click', function(e) {
+		/*$(".apps").on('click', function(e) {
 			e.stopPropagation();
-		})
+			console.log("2");
+		})*/
 
 		$(".newAppointment").on('click', function(e) {
 			e.stopPropagation();
 		})
-
 	});
 
-	$(".apps").on('click', 'button', function(e) {
-		e.preventDefault();
-		$(this).closest(".newApp").remove();
-	})
-
-	$(".apps").on('mouseenter', 'button', function() {
+	$(document).on('mouseenter', '#delete', function() {
 		$(this).css("background-color", "#e2e2e2");
-	})
-	$(".apps").on('mouseleave', 'button', function() {
+	});
+	$(document).on('mouseleave', '#delete', function() {
 		$(this).css("background-color", "white");
-	})
+	});
+
+	$(document).on('click', '#delete', function(e) {
+		e.stopPropagation();
+		console.log("delete");
+		$(this).closest(".newApp").remove();
+	});
 
 	$("form").on('click', "#cancel", function(e) {
 		e.preventDefault();
@@ -212,19 +221,12 @@ $(document).on('ready', function() {
 				+ appointment.start + "<span> To: </span>" + appointment.end + "</p></div></div>");
 			$(this).closest(".day").find(".newApp").last().data("time", time);
 			$(this).closest(".day").find(".newApp").last().append(buttons);
-			if (notes !== "") {
+			if (appointment.notes !== "") {
 				$(this).closest(".day").find(".newApp").last().append("<div class='notes'>Notes: " + appointment.notes + "</div>");
 			}
 
 		}
 	});
-
-	$(window).scroll(function () {
-		if()
-	})
-
-	
-	
 
 
 });
