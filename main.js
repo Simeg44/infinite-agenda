@@ -181,6 +181,53 @@ $(document).on('ready', function() {
 	$(document).on('mouseleave', '#delete', function() {
 		$(this).css("background-color", "white");
 	});
+	$(document).on('mouseenter', '#edit', function() {
+		$(this).css("background-color", "#e2e2e2");
+	});
+	$(document).on('mouseleave', '#edit', function() {
+		$(this).css("background-color", "white");
+	});
+
+	$(document).on('click', '#edit', function(e) {
+		e.stopPropagation();
+		var newPlace = $(this).closest(".newApp");
+		var appointment = {
+			title: newPlace.find(".app-title").text(),
+			location: newPlace.find(".app-loc").text(),
+			start: newPlace.find("#app-start").text(),
+			end: newPlace.find("#app-end").text(),
+			notes: newPlace.find('.notes').text()
+		};
+		console.log(appointment.title);
+
+		if (!formOpen) {
+			var formPlace = $(this).closest(".newAppointment");
+			$(this).closest(".day").append($(".newAppointment"));
+			$(".newAppointment").slideToggle();
+			$(this).closest(".day").find('p').slideToggle();
+			$(this).closest(".day").find('.apps').fadeToggle();
+
+			$(".newAppointment").find("#title").val(appointment.title);
+			$(".newAppointment").find("#location").val(appointment.location.substring(9));
+			$(".newAppointment").find("#start").val(appointment.start);
+			$(".newAppointment").find("#end").val(appointment.end);
+			$(".newAppointment").find("#notes").val(appointment.notes.substring(6));
+			$(".newAppointment").find("#title").focus();
+
+			console.log(newPlace);
+			newPlace.remove();
+			
+			formOpen = true;
+		}
+
+		// $(".newAppointment").submit(function(e) {
+
+		// }
+		$(".newAppointment").on('click', function(e) {
+			e.stopPropagation();
+		})
+
+	}) 
 
 	$(document).on('click', '#delete', function(e) {
 		e.stopPropagation();
@@ -210,12 +257,12 @@ $(document).on('ready', function() {
 		localStorage.setItem("appointment", appointment);
 		var time = appointment.start;
 
-		var buttons = $("<div class='change-app'><button id='delete'>Delete</button></div>");
+		var buttons = $("<div class='change-app'><button id='edit'>Edit</button><button id='delete'>Delete</button></div>");
 
 		if (appointment.title !== "") {
 			$(this).closest(".day").find(".apps").append("<div class='newApp'><p class='app-title'>" + appointment.title 
-				+ "</p><p class='app-loc'>Location: " + appointment.location + "</p><div class='app-times'><p><span>From: </span>" 
-				+ appointment.start + "<span> To: </span>" + appointment.end + "</p></div></div>");
+				+ "</p><p class='app-loc'>Location: " + appointment.location + "</p><div class='app-times'><p><span class='color'>From: </span><span id='app-start'>" 
+				+ appointment.start + "</span><span class='color'> To: </span><span id='app-end'>" + appointment.end + "</span></p></div></div>");
 			$(this).closest(".day").find(".newApp").last().data("order", time);
 			$(this).closest(".day").find(".newApp").last().append(buttons);
 			if (appointment.notes !== "") {
