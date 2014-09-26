@@ -110,6 +110,13 @@ button, #submit {
 	margin-top: -5px;
 }
 
+i {
+	color: indianred;
+	position: absolute;
+	top: 9em;
+	right: 35%;
+}
+
 @media screen and (min-width: 670px) {
 	.date {
 		padding: 10px 20px;

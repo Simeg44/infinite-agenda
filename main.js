@@ -161,6 +161,7 @@ $(document).on('ready', function() {
 			$(this).find('.apps').fadeToggle();
 
 			$(this).find("input[type=text], textarea").val("");
+			$('input:checkbox').removeAttr('checked');
 			$(this).find("#title").focus();
 			formOpen = true;
 		}
@@ -199,6 +200,7 @@ $(document).on('ready', function() {
 			notes: newPlace.find('.notes').text()
 		};
 		console.log(appointment.title);
+		newPlace.attr("id", "destroy");
 
 		if (!formOpen) {
 			var formPlace = $(this).closest(".newAppointment");
@@ -214,7 +216,7 @@ $(document).on('ready', function() {
 			$(".newAppointment").find("#notes").val(appointment.notes.substring(6));
 			$(".newAppointment").find("#title").focus();
 
-			console.log(newPlace);
+			$(".newAppointment").find("#cancel").hide();
 			newPlace.remove();
 			
 			formOpen = true;
@@ -251,25 +253,33 @@ $(document).on('ready', function() {
 			location: place.find("#location").val(),
 			start: place.find("#start").val(),
 			end: place.find("#end").val(),
+			important: place.find("#important").is(":checked"),
 			notes: place.find('#notes').val()
 		};
-		console.log(appointment);
+		console.log(appointment.important);
 		localStorage.setItem("appointment", appointment);
 		var time = appointment.start;
 
 		var buttons = $("<div class='change-app'><button id='edit'>Edit</button><button id='delete'>Delete</button></div>");
 
+
 		if (appointment.title !== "") {
 			$(this).closest(".day").find(".apps").append("<div class='newApp'><p class='app-title'>" + appointment.title 
-				+ "</p><p class='app-loc'>Location: " + appointment.location + "</p><div class='app-times'><p><span class='color'>From: </span><span id='app-start'>" 
+				+ "</p><p class='app-loc'>Location: " + appointment.location 
+				+ "</p><div class='app-times'><p><span class='color'>From: </span><span id='app-start'>" 
 				+ appointment.start + "</span><span class='color'> To: </span><span id='app-end'>" + appointment.end + "</span></p></div></div>");
 			$(this).closest(".day").find(".newApp").last().data("order", time);
 			$(this).closest(".day").find(".newApp").last().append(buttons);
 			if (appointment.notes !== "") {
 				$(this).closest(".day").find(".newApp").last().append("<div class='notes'>Notes: " + appointment.notes + "</div>");
 			}
+			if (appointment.important) {
+				$(this).closest(".day").find(".newApp").last().append("<i class='fa fa-exclamation-circle'></i>");
+				console.log("working");
+			}
 
 		}
+		$(".newAppointment").find("#cancel").show();
 
 		var movingApp = $(".newApp").last();
 		while ((movingApp.data("order")) < (movingApp.prev().data("order"))) {
